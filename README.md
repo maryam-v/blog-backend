@@ -13,8 +13,9 @@ The application is deployed on **Heroku** and uses **PostgreSQL** as the databas
 - CRUD operations (Create, Read, Update, Delete)
 - Flask + SQLAlchemy
 - PostgreSQL (Heroku)
-- Deployed on Heroku
+- Deployed on Heroku with Gunicorn
 - CORS enabled for frontend integration
+- Unit tests with pytest (SQLite in-memory)
 
 ---
 
@@ -47,8 +48,8 @@ All endpoints return JSON responses.
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/YOUR_USERNAME/blog-backend-flask.git
-cd blog-backend-flask
+git clone https://github.com/YOUR_USERNAME/blog_backend.git
+cd blog_backend
 ```
 
 ### 2. Create and activate a virtual environment
@@ -70,7 +71,9 @@ python app.py
 ```
 The backend will run on:
 
+```
 http://localhost:5001
+```
 
 ---
 
@@ -81,19 +84,39 @@ Basic unit tests are implemented using pytest to validate the core API endpoints
 ### Run tests locally
 
 ```bash
-pytest
+pytest -q
 ```
 
 Tests run against an in-memory SQLite database and do not affect production data.
 
 ---
 
-## 🌍 Deployment
+## 🌍 Deployment (Heroku)
 
 The backend is deployed on Heroku.
 
 ### 👉 Live Backend URL:
 https://flasker60-6ecec4d890e9.herokuapp.com
+
+### Prerequisites
+
+- Install Heroku CLI (Dev Center instructions):
+https://devcenter.heroku.com/articles/heroku-cli
+- Login:
+
+```bash
+heroku login
+```
+
+#### 1) Add required files for Heroku
+
+##### Install Gunicorn and DB driver
+
+```bash
+pip install gunicorn psycopg2-binary
+pip freeze > requirements.txt
+```
+
 
 ---
 
