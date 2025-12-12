@@ -95,8 +95,9 @@ Tests run against an in-memory SQLite database and do not affect production data
 
 The backend is deployed on Heroku.
 
-### 👉 Live Backend URL:
+### 👉 Live Backend URL (Heroku):
 https://flasker60-6ecec4d890e9.herokuapp.com
+
 
 ### Prerequisites
 
@@ -115,6 +116,69 @@ heroku login
 ```bash
 pip install gunicorn psycopg2-binary
 pip freeze > requirements.txt
+```
+
+##### Add a Procfile (tells Heroku how to run the app)
+
+Create a file named Procfile (no extension) containing:
+
+```bash
+web: gunicorn app:app
+```
+
+This assumes your Flask instance is named app inside app.py.
+
+#### 2) Create a Heroku app
+
+```bash
+heroku create flasker60
+```
+#### 3) Add a PostgreSQL database
+
+```bash
+heroku addons:create heroku-postgresql:essential-0 --app flasker60
+```
+
+#### 4) Configure the database URL in Flask
+
+Heroku automatically provides DATABASE_URL.
+
+To view it:
+
+```bash
+heroku config:get DATABASE_URL --app flasker60
+```
+
+In your Flask code, you should read it from the environment (recommended):
+
+- Use os.environ.get("DATABASE_URL")
+
+- (If needed) replace postgres:// with postgresql:// for SQLAlchemy
+
+#### 5) Deploy to Heroku (and update after changes)
+
+##### First-time setup: add Heroku remote (only once)
+
+If you created the app with heroku create, the remote is usually added automatically.
+If not:
+
+```bash
+heroku git:remote -a flasker60
+```
+
+##### Deploy / update workflow (same every time)
+```bash
+git add .
+git commit -m "Update backend"
+git push heroku main
+```
+
+#### 6) Quick troubleshooting
+
+Check logs:
+
+```bash
+heroku logs --tail --app flasker60-6ecec4d890e9
 ```
 
 
