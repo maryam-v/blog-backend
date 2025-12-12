@@ -44,6 +44,17 @@ All endpoints return JSON responses.
 
 ---
 
+## Pagination
+
+The `GET /posts` endpoint supports pagination via query parameters.
+
+- `page` (default: `1`)
+- `limit` (default: `5`)
+
+Used by the frontend to implement Next / Previous navigation.
+
+---
+
 ## ▶️ Run Locally
 
 ### 1. Clone the repository
