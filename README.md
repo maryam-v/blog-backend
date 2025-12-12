@@ -131,12 +131,12 @@ This assumes your Flask instance is named app inside app.py.
 #### 2) Create a Heroku app
 
 ```bash
-heroku create flasker60
+heroku create app-name
 ```
 #### 3) Add a PostgreSQL database
 
 ```bash
-heroku addons:create heroku-postgresql:essential-0 --app flasker60
+heroku addons:create heroku-postgresql:essential-0 --app app-name
 ```
 
 #### 4) Configure the database URL in Flask
@@ -146,7 +146,7 @@ Heroku automatically provides DATABASE_URL.
 To view it:
 
 ```bash
-heroku config:get DATABASE_URL --app flasker60
+heroku config:get DATABASE_URL --app app-name
 ```
 
 In your Flask code, you should read it from the environment (recommended):
@@ -163,7 +163,7 @@ If you created the app with heroku create, the remote is usually added automatic
 If not:
 
 ```bash
-heroku git:remote -a flasker60
+heroku git:remote -a app-name
 ```
 
 ##### Deploy / update workflow (same every time)
@@ -178,7 +178,7 @@ git push heroku main
 Check logs:
 
 ```bash
-heroku logs --tail --app flasker60-6ecec4d890e9
+heroku logs --tail --app app-name
 ```
 
 
