@@ -74,6 +74,20 @@ http://localhost:5001
 
 ---
 
+## 🧪 Unit Tests
+
+Basic unit tests are implemented using pytest to validate the core API endpoints.
+
+### Run tests locally
+
+```bash
+pytest
+```
+
+Tests run against an in-memory SQLite database and do not affect production data.
+
+---
+
 ## 🌍 Deployment
 
 The backend is deployed on Heroku.
