@@ -88,21 +88,3 @@ https://flasker60-6ecec4d890e9.herokuapp.com
 The backend is designed to be consumed by a frontend built with Next.js, React, and Tailwind CSS.
 
 ---
-
-## ✅ After adding the README
-
-Run these commands:
-
-```bash
-git add README.md
-git commit -m "Add backend README"
-git push
-```
-
-Then open your GitHub repo and verify:
-
-README renders correctly
-
-Heroku URL works
-
-Repo is public
