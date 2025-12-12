@@ -12,6 +12,7 @@ packaging==25.0
 pluggy==1.6.0
 psycopg2-binary==2.9.11
 pytest==7.4.0
+Flask-Testing==0.8.1
 setuptools==80.9.0
 SQLAlchemy==2.0.45
 typing_extensions==4.15.0

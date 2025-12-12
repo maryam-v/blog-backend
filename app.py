@@ -33,10 +33,12 @@ def list_posts():
 
 @app.get("/posts/<int:post_id>")
 def get_post(post_id: int):
-    post = Post.query.get(post_id)
+    # post = Post.query.get(post_id)
+    post = db.session.get(Post, post_id)
     if not post:
         abort(404, description="Post not found")
     return jsonify(post.to_dict())
+
 
 @app.post("/posts")
 def create_post():
@@ -54,7 +56,8 @@ def create_post():
 
 @app.put("/posts/<int:post_id>")
 def update_post(post_id: int):
-    post = Post.query.get(post_id)
+    # post = Post.query.get(post_id)
+    post = db.session.get(Post, post_id)
     if not post:
         abort(404, description="Post not found")
 
@@ -72,7 +75,8 @@ def update_post(post_id: int):
 
 @app.delete("/posts/<int:post_id>")
 def delete_post(post_id: int):
-    post = Post.query.get(post_id)
+    # post = Post.query.get(post_id)
+    post = db.session.get(Post, post_id)
     if not post:
         abort(404, description="Post not found")
 
