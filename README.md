@@ -34,10 +34,10 @@ The application is deployed on **Heroku** and uses **PostgreSQL** as the databas
 | Method | Endpoint           | Description            |
 |------|--------------------|------------------------|
 | GET  | `/posts`           | Get all blog posts     |
-| GET  | `/posts/:id`       | Get a single post      |
+| GET  | `/posts/<id>`      | Get a single post      |
 | POST | `/posts`           | Create a new post      |
-| PUT  | `/posts/:id`       | Update a post          |
-| DELETE | `/posts/:id`     | Delete a post          |
+| PUT  | `/posts/<id>`      | Update a post          |
+| DELETE | `/posts/<id>`    | Delete a post          |
 
 All endpoints return JSON responses.
 
