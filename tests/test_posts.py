@@ -29,11 +29,14 @@ def test_health(client):
 
 
 def test_get_posts_empty(client):
-    res = client.get("/posts")
+    res = client.get("/posts?page=1&limit=5")
     assert res.status_code == 200
     data = res.get_json()
-    assert isinstance(data, list)
-    assert len(data) == 0
+
+    assert isinstance(data, dict)
+    assert "posts" in data
+    assert isinstance(data["posts"], list)
+    assert len(data["posts"]) == 0
 
 
 def test_create_post(client):

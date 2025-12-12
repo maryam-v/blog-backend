@@ -59,11 +59,38 @@ def update_profile():
 
 @app.get("/posts")
 def list_posts():
+    # author (single profile)
     profile = get_or_create_profile()
     author = {"id": profile.id, "name": profile.name}
 
-    posts = Post.query.order_by(Post.created_at.desc()).all()
-    return jsonify([p.to_dict(author=author) for p in posts])
+    # pagination params: /posts?page=1&limit=5
+    page = request.args.get("page", default=1, type=int)
+    limit = request.args.get("limit", default=5, type=int)
+
+    if page < 1:
+        return jsonify({"error": "page must be >= 1"}), 400
+    if limit < 1 or limit > 50:
+        return jsonify({"error": "limit must be between 1 and 50"}), 400
+
+    total = db.session.query(Post).count()
+    total_pages = (total + limit - 1) // limit
+
+    posts = (
+        Post.query
+        .order_by(Post.created_at.desc())
+        .offset((page - 1) * limit)
+        .limit(limit)
+        .all()
+    )
+
+    return jsonify({
+        "page": page,
+        "limit": limit,
+        "total": total,
+        "total_pages": total_pages,
+        "posts": [p.to_dict(author=author) for p in posts],
+    })
+
 
 @app.get("/posts/<int:post_id>")
 def get_post(post_id: int):
