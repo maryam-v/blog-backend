@@ -4,16 +4,14 @@ from .extensions import db
 def now_utc():
     return datetime.now(timezone.utc)
 
-class Author(db.Model):
-    __tablename__ = "authors"
+class Profile(db.Model):
+    __tablename__ = "profile"
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), nullable=False)
+    name = db.Column(db.String(80), nullable=False, default="Blog Owner")
     bio = db.Column(db.Text, nullable=False, default="")
     created_at = db.Column(db.DateTime, default=now_utc, nullable=False)
     updated_at = db.Column(db.DateTime, default=now_utc, onupdate=now_utc, nullable=False)
-
-    posts = db.relationship("Post", back_populates="author", lazy=True)
 
     def to_dict(self):
         return {
@@ -33,15 +31,14 @@ class Post(db.Model):
     created_at = db.Column(db.DateTime, default=now_utc, nullable=False)
     updated_at = db.Column(db.DateTime, default=now_utc, onupdate=now_utc, nullable=False)
 
-    author_id = db.Column(db.Integer, db.ForeignKey("authors.id"), nullable=False)
-    author = db.relationship("Author", back_populates="posts")
-
-    def to_dict(self):
-        return {
+    def to_dict(self, author=None):
+        data = {
             "id": self.id,
             "title": self.title,
             "content": self.content,
             "created_at": self.created_at.isoformat(),
             "updated_at": self.updated_at.isoformat(),
-            "author": self.author.to_dict() if self.author else None,
         }
+        if author:
+            data["author"] = author
+        return data

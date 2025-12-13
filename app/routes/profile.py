@@ -1,26 +1,26 @@
 from flask import Blueprint, request, jsonify
 from ..extensions import db
-from ..services.authors_service import get_or_create_default_author
+from ..services.profile_service import get_or_create_profile
 
 profile_bp = Blueprint("profile", __name__)
 
 @profile_bp.get("/profile")
 def get_profile():
-    author = get_or_create_default_author()
-    return jsonify(author.to_dict())
+    profile = get_or_create_profile()
+    return jsonify(profile.to_dict())
 
 @profile_bp.put("/profile")
 def update_profile():
-    author = get_or_create_default_author()
+    profile = get_or_create_profile()
     data = request.get_json(silent=True) or {}
 
     if "name" in data:
-        author.name = (data["name"] or "").strip()
+        profile.name = (data["name"] or "").strip()
     if "bio" in data:
-        author.bio = (data["bio"] or "").strip()
+        profile.bio = (data["bio"] or "").strip()
 
-    if not author.name:
+    if not profile.name:
         return jsonify({"error": "name cannot be empty"}), 400
 
     db.session.commit()
-    return jsonify(author.to_dict())
+    return jsonify(profile.to_dict())
