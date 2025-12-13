@@ -1,24 +1,27 @@
 import json
-import os
 import pytest
 
-# IMPORTANT: set DATABASE_URL BEFORE importing the app
-os.environ["DATABASE_URL"] = "sqlite:///:memory:"
-
-from app import app  # noqa: E402
-from models import db  # noqa: E402
+from app import create_app
+from app.config import TestingConfig
+from app.extensions import db
 
 
 @pytest.fixture
-def client():
-    app.config["TESTING"] = True
+def app():
+    app = create_app(TestingConfig)
 
     with app.app_context():
         db.drop_all()
         db.create_all()
+        # If your create_app() seeds profile automatically, you can leave it.
+        # If not, it's still fine for these tests.
 
-    with app.test_client() as client:
-        yield client
+    yield app
+
+
+@pytest.fixture
+def client(app):
+    return app.test_client()
 
 
 def test_health(client):
@@ -51,12 +54,12 @@ def test_create_post(client):
 
 
 def test_get_single_post(client):
-    # Create first
     payload = {"title": "Another", "content": "Post content"}
     create_res = client.post("/posts", data=json.dumps(payload), content_type="application/json")
+    assert create_res.status_code == 201
+
     post_id = create_res.get_json()["id"]
 
-    # Fetch
     res = client.get(f"/posts/{post_id}")
     assert res.status_code == 200
     data = res.get_json()
@@ -64,15 +67,14 @@ def test_get_single_post(client):
 
 
 def test_delete_post(client):
-    # Create first
     payload = {"title": "To delete", "content": "bye"}
     create_res = client.post("/posts", data=json.dumps(payload), content_type="application/json")
+    assert create_res.status_code == 201
+
     post_id = create_res.get_json()["id"]
 
-    # Delete
     res = client.delete(f"/posts/{post_id}")
     assert res.status_code == 204
 
-    # Confirm gone
     res2 = client.get(f"/posts/{post_id}")
     assert res2.status_code == 404
