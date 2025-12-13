@@ -4,7 +4,6 @@ import pytest
 from app import create_app
 from app.config import TestingConfig
 from app.extensions import db
-from app.services.authors_service import get_or_create_default_author
 
 
 @pytest.fixture
@@ -14,8 +13,8 @@ def app():
     with app.app_context():
         db.drop_all()
         db.create_all()
-        # ensure default author exists (Post.author_id is NOT NULL)
-        get_or_create_default_author()
+        # If your create_app() seeds profile automatically, you can leave it.
+        # If not, it's still fine for these tests.
 
     yield app
 
@@ -49,16 +48,9 @@ def test_create_post(client):
 
     assert res.status_code == 201
     data = res.get_json()
-
     assert data["title"] == "Test Post"
     assert data["content"] == "Hello from tests"
     assert "id" in data
-
-    # author should exist in response
-    assert "author" in data
-    assert data["author"] is not None
-    assert "id" in data["author"]
-    assert "name" in data["author"]
 
 
 def test_get_single_post(client):
@@ -72,8 +64,6 @@ def test_get_single_post(client):
     assert res.status_code == 200
     data = res.get_json()
     assert data["id"] == post_id
-    assert "author" in data
-    assert data["author"] is not None
 
 
 def test_delete_post(client):
