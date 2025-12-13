@@ -2,7 +2,7 @@ from flask import Flask, jsonify
 from .config import DevelopmentConfig
 from .extensions import db, cors
 from .routes import register_routes
-from .services.profile_service import get_or_create_profile
+from .services.authors_service import get_or_create_default_author
 
 def create_app(config_object=DevelopmentConfig):
     app = Flask(__name__)
@@ -15,7 +15,7 @@ def create_app(config_object=DevelopmentConfig):
 
     with app.app_context():
         db.create_all()
-        get_or_create_profile()
+        get_or_create_default_author()
 
     @app.errorhandler(404)
     def not_found(e):

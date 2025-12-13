@@ -7,8 +7,8 @@ def get_database_uri():
     return db_url
 
 class BaseConfig:
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_DATABASE_URI = get_database_uri()
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 class DevelopmentConfig(BaseConfig):
     DEBUG = True
